@@ -36,7 +36,7 @@
                     </div>
                     <div class="todolist__description">
                         <div class="todolist__title-sub-task">Подзадачи</div>
-                        <div class="todolist__description-task">Описание<span class="todolist__arrow"></span></div>
+                        <div class="todolist__description-task"><span class="todolist__description-text">Описание</span><span class="todolist__arrow"></span></div>
                         <button class="todolist__btn todolist__padding"></button>
                     </div>
                     <div class="todolist__sub-items">
@@ -239,6 +239,7 @@ export default{
             padding: 7px 0;
             align-self: flex-start;
             margin-left: -70px;
+
         }
         &__opacity-text{
             font-family: Roboto;
@@ -252,6 +253,16 @@ export default{
             &_big{
                 font-size: 40px;
             }
+        }
+        &__description-text{
+            margin-right: 20px;
+        }
+        &__arrow{
+            background: url('./images/arrow.png') no-repeat 100% center;
+            width: 12px;
+            height: 10px;
+            display: inline-block;
+            margin-right: -30px;
         }
     }
 </style>   
