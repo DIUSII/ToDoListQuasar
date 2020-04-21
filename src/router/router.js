@@ -29,4 +29,5 @@ let router = new Router({
 //     router.push({ path: '/sign-up' })
 // }
 // console.log(router);
+// router.push({ path: '/login' })
 export default router
