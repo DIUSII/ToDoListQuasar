@@ -1,16 +1,16 @@
 <template>
-  <div class="app">
-    <login />
+  <div id="app">
+    <block></block>
   </div>
 </template>
 
 <script>
-import login from './components/login/login.vue'
+import block from './components/block'
 
 export default {
   name: 'App',
   components: {
-    login
+    block
   }
 }
 </script>

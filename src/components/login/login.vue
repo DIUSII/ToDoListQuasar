@@ -5,37 +5,127 @@
             <h2 class="login__title">Вход</h2>
             <label class="login__label">
                 <span class="login__span">Логин:</span>
-                <input type="text" class="login__input" :class="{'blueBorder': blueBorderClick}" v-on:click="inputClick">
+                <input 
+                    type="text"
+                    class="login__input" 
+                    :class="{
+                        blueBorder: inputFocus, 
+                        blackBorder: inputHover, 
+                        redBorder: inputClick || buttonError,
+                    }" 
+                    @focus="inputFocus = true" 
+                    @blur="inputFocus = false" 
+                    @mouseover="hoverLogin" 
+                    @mouseleave="hoverLogin" 
+                    v-model="valueInput"
+                >
             </label>
                 <label class="login__label">
                 <span class="login__span">Пароль:</span>
-                <input type="text" class="login__input login__input_margin">
+                <input 
+                    type="password" 
+                    class="login__input login__input_margin" 
+                    :class="{
+                        blueBorder: inputFocusPass, 
+                        blackBorder: inputHoverPass, 
+                        redBorder: inputClickPass || buttonError,
+                    }" 
+                    @focus="inputFocusPass = true" 
+                    @blur="inputFocusPass = false" 
+                    @mouseover="hoverPass" 
+                    @mouseleave="hoverPass" 
+                    v-model="valueInputPass"
+                >
             </label>
-            <button class="login__button">Войти</button>
+            <div class="login__error" v-if="inputClick || inputClickPass">
+                Поля "Логин" и "Пароль" не могут быть пустыми.<br>Введите логин и/или пароль.
+            </div>  
+            <div class="login__error" v-if="buttonError">
+                Неверно введен логин и/или пароль
+            </div>  
+            <button 
+                class="login__button" 
+                :class="{
+                    backgroundLightColor: hoverbullion,
+                    backgroundDarkColor:buttonBullion, 
+                    marginTopNone: inputClick || inputClickPass || buttonError,
+                }"
+                @click="buttonClick"
+                @mouseover="hoverButton"  
+                @mouseleave="hoverButton" 
+                @mouseup="buttonFocus" 
+                @mousedown="buttonFocus"
+            >
+                Войти
+            </button>
         </div>
     </div>
 </template>
 <script>
 import logo from '../logo/logo.vue';
+import user from './user.json'
+import router from '../../router/router'
+let people =  JSON.parse(JSON.stringify(user));
 export default {
     name : "login",
     data(){
         return{
-            blackBorderHover: false,
-            blueBorderClick: false
+            user,
+            inputFocus: false,
+            inputFocusPass: false,
+            inputHover:false,
+            inputHoverPass: false,
+            inputClick: false,
+            inputClickPass: false,
+            valueInput: "",
+            valueInputPass: "",
+            buttonError: false,
+            hoverbullion: false,
+            buttonBullion: false,
         }
     },
     components: {
-        logo
+        logo,
     },
     methods: {
-        inputHover(){
-            this.blackBorderHover = true;
+        hoverLogin(){
+            this.inputHover = !this.inputHover;
         },
-        inputClick(){
-            this.blueBorderClick = !this.blueBorderClick;
+        hoverPass(){
+            this.inputHoverPass = !this.inputHoverPass;
+        },
+        hoverButton(){
+            this.hoverbullion = !this.hoverbullion;
+        },
+        buttonFocus(){
+            this.buttonBullion = !this.buttonBullion;
+        },
+        buttonClick(){
+            if(this.valueInput === ""){
+                this.inputClick = true;
+                
+            }
+            else{
+                this.inputClick = false;
+            }
+            if(this.valueInputPass === ""){
+                this.inputClickPass = true;
+            }
+            else{
+                this.inputClickPass = false;
+            }
+            for(let i = 0; i < people.users.length; i++){
+                if(people.users[i].login === this.valueInput && people.users[i].password === this.valueInputPass){
+                    router.push({path: "/todolist"});
+                }
+                else if(this.inputClickPass == false && this.inputClick == false){
+                    this.buttonError = true;
+                }
+                else{
+                    this.buttonError = false;
+                }
+            }
         }
-
     }
 }
 </script>
@@ -46,10 +136,22 @@ export default {
         margin: 0 auto;
     }
     .blackBorder{
-        border: 1px solid #292E4E;
+        border: 1px solid #292E4E !important;
     }
     .blueBorder{
         border: 1px solid #615AFE !important;
+    }
+    .redBorder{
+        border: 1px solid #DB2322 !important;
+    }
+    .backgroundLightColor{
+        background-color: #F06061 !important;
+    }
+    .backgroundDarkColor{
+        background-color: #D47070 !important;
+    }
+    .marginTopNone{
+        margin-top: 0 !important;
     }
     .login{
         margin: 121px auto;
@@ -81,23 +183,27 @@ export default {
         &__input{
             border: 1px solid #B5B7BE;
             border-radius: 4px;
-            max-width: 400px;
+            max-width: 382px;
             padding: 15px 0 15px 16px;
             display: block;
             width: 100%;
             margin-bottom: 16px;
             font-family: Roboto;
             font-size: 14px;
-            color: #292E4E;
+            color: rgb(86, 89, 114);
             outline: none;
-            // transition: 1s;
-            // outline-color: #615AFE;
-            // &:hover{
-            //     border: 1px solid #292E4E;
+            transition: 1s;
+            // &_margin{
+            //     // margin-bottom: 55px;
             // }
-            &_margin{
-                margin-bottom: 55px;
-            }
+        }
+        &__error{
+            color:#DB2322;
+            font-family: Roboto;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 39px;
+
         }
         &__button{
             border: none;
@@ -110,6 +216,7 @@ export default {
             font-weight: 500;
             font-size: 16px;
             color: #FFFFFF;
+            margin-top: 55px;
             margin-bottom: 77px;
         }
     }
