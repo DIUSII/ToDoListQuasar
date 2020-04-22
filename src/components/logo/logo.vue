@@ -34,19 +34,19 @@ export default {
         }
         &__title{
             display: inline-block;
-            font-weight: 400;
+            font-weight: 300;
             font-size: 56px;
             margin: 0;
         }
         &__span{
             font-family: 'Comfortaa', sans-serif;
             &_blue-line{
-                border-bottom: 1px solid #615AFE;
+                border-bottom: 2px solid #615AFE;
                 opacity: 0.9;
                 margin-right: 2px;
             }
             &_red-line{
-                border-bottom: 1px solid #F88081;
+                border-bottom: 2px solid #F88081;
                 opacity: 0.9;
             }
         }

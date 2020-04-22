@@ -5,7 +5,15 @@
                 <logo/>
                 <div class ="todolist__user">
                     <p class="todolist__nick-name"> Никнейм1234</p>
-                    <button class="todolist__button todolist__button_white">Выход</button>
+                    <button 
+                    class="todolist__button todolist__button_white"
+                    :class="{blueBorderTo: checkHoverButton, backgroundDarkBlue: checkClickButton}"
+                    @mouseover="hoverButton"
+                    @mouseleave="hoverButton"
+                    @mousedown="clickButton"
+                    @mouseup="clickButton"
+                    
+                    >Выход</button>
                 </div>
             </div>
         </div>
@@ -18,7 +26,13 @@
                             <img src="./images/sorting.png" alt="sorting" class="todolist__sorting">
                             <img src='./images/filter.png' alt="filter">
                         </div>
-                        <button class="todolist__btn"></button>
+                        <button class="todolist__btn"
+                        :class="{backgroundLightRed: checkHoverButtonEllipse, backgroundDarkRed: checkClickButtonEllipse}"
+                        @mouseover="hoveButtonEllipse"
+                        @mouseleave="hoveButtonEllipse"
+                        @mousedown="clickButtonEllipse"
+                        @mouseup="clickButtonEllipse"
+                        ></button>
                     </div>
                     <div class="todolist__items">
                         <p class="todolist__opacity-text todolist__opacity-text_big">У вас пока нет задач.</p>
@@ -36,7 +50,10 @@
                     </div>
                     <div class="todolist__description">
                         <div class="todolist__title-sub-task">Подзадачи</div>
-                        <div class="todolist__description-task"><span class="todolist__description-text">Описание</span><span class="todolist__arrow"></span></div>
+                        <div class="todolist__description-task">
+                            <span class="todolist__description-text">Описание</span>
+                            <span class="todolist__arrow"></span>
+                        </div>
                         <button class="todolist__btn todolist__padding"></button>
                     </div>
                     <div class="todolist__sub-items">
@@ -52,19 +69,50 @@ import logo from '../logo/logo'
 export default{
     name: "todolist",
     data() {
-        return{}
+        return{
+            checkHoverButton: false,
+            checkClickButton: false,
+            checkHoverButtonEllipse: false,
+            checkClickButtonEllipse: false
+
+        }
     },
     components: {
         logo
     },
     methods: {
-
+        hoverButton(){
+            this.checkHoverButton = !this.checkHoverButton;
+        },
+        clickButton(){
+            this.checkClickButton = !this.checkClickButton;
+        },
+        hoveButtonEllipse(){
+             this.checkHoverButtonEllipse = !this.checkHoverButtonEllipse;
+        },
+        clickButtonEllipse(){
+            this.checkClickButtonEllipse = !this.checkClickButtonEllipse;
+        },
     }
 }
 </script>
 <style lang="scss">
     body{
         margin: 0;padding: 0;
+    }
+    .blueBorderTo{
+        border: 2px solid #615AFE !important;
+    }
+    .backgroundDarkBlue{
+        background-color:#E1DFFF !important;
+    }
+    .backgroundLightRed{
+        background: url('./images/white-plus.png') no-repeat center center !important;
+        background-color:#F88081 !important;
+    }
+    .backgroundDarkRed{
+        background: url('./images/white-plus.png') no-repeat center center !important;
+        background-color:#D47070 !important;
     }
     .todolist{
         background-color: #F0EFFF;
@@ -141,7 +189,7 @@ export default{
         }
         &__span{
             font-family: Roboto;
-            font-weight: 500;
+            font-weight: 400;
             font-size: 24px;
             color: #FFFFFF;
             margin-right: 17px;
@@ -157,6 +205,7 @@ export default{
             border: none;
             background-color: #FFFFFF;
             border-radius: 50%;
+            outline: none;
         }
         &__items{
             background: #EFEEFF;
@@ -220,7 +269,7 @@ export default{
         }
         &__title-sub-task{
             font-family: Roboto;
-            font-weight: 500;
+            font-weight: 400;
             font-size: 22px;
             color: #FFFFFF;
         }
