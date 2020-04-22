@@ -35,13 +35,17 @@
                         ></button>
                     </div>
                     <div class="todolist__items">
-                        <div class="todolist__item-task">
+                        <div class="todolist__item-task" 
+                        @mouseleave="hoverItemTask"
+                        @mouseover="hoverItemTask"
+                        >
                             <div class="todolist__checkbox-name">
                                 <div class="todolist__urgency"></div>
                                 <div class="todolist__ellipse-mini"></div>
                                 <div class="todolist__text-task">
                                     Задача №1
                                 </div>
+                                <img src="./images/pen.png" alt="pen" v-if="checkPen" width="24" height="24" style="margin-left: 10px">
                             </div>
                             <div class="todolist__time-progress">
                                 <div class="todolist__time">
@@ -137,6 +141,7 @@ export default{
             checkClickCross1: false,
             checkHoverCross2: false,
             checkClickCross2: false,
+            checkPen: false,
 
         }
     },
@@ -174,6 +179,9 @@ export default{
         clickCross2(){
             this.checkClickCross2 = !this.checkClickCross2;
         },
+        hoverItemTask(){
+            this.checkPen = !this.checkPen;
+        }
 
     }
 }
