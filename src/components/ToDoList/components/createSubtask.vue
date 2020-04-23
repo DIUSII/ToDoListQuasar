@@ -4,8 +4,8 @@
             class="todolist__sub-item" 
             v-for="(itemSub, index) in itemsSub" 
             :key="itemSub.id" 
-             @mouseleave="hoverItemTask"
-            @mouseenter="hoverItemTask"
+             @mouseleave="hoverItemSubTask"
+            @mouseenter="hoverItemSubTask"
         >
             <div class="todolist__checkbox-sub-task">
                 <div class="todolist__ellipse-sub"></div>
@@ -24,8 +24,8 @@
                         blueLightBackgroundCross: checkHoverCross, 
                         blueDarkBackgroundCross: checkClickCross
                     }"
-                    @mouseleave="hoverItemTask"
-                    @mouseenter="hoverItemTask"
+                    @mouseleave="hoverItemSubTask"
+                    @mouseenter="hoverItemSubTask"
                     @mousedown="clickCross"
                     @mouseup="clickCross"
                     @click="deleteItemSub(index)"
