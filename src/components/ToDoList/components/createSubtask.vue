@@ -19,7 +19,7 @@
                     v-model="itemSub.title" 
                     v-else 
                     v-focus 
-                    class="todolist__title-sub todolist__editInput" 
+                    class="todolist__title-sub todolist__editInput todolist__title-sub_bckg" 
                     :class="{darkBlueBackgroundTask: checkBackgraundTask}"
                     @blur="doneEdit()"
                     @keyup.enter="doneEdit()"
@@ -126,11 +126,7 @@ export default {
             justify-content: space-between;
             align-items: center;
         }
-        &__todolist__text-sub-task{
-            font-family: Roboto;
-            font-size: 12px;
-            color: #615AFE;
-        }
+
         &__checkbox-sub-task{
             display: flex;
             justify-content: space-between;
@@ -141,6 +137,9 @@ export default {
             font-family: Roboto;
             font-size: 12px;
             color: #615AFE;
+            &_bckg{
+                background: #E3E7FF;
+            }
         }
         &__ellipse-sub{
             background: #FAFAFA;
