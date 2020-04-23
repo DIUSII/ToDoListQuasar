@@ -36,7 +36,7 @@
                         ></button>
                     </div>
                     <div class="todolist__items">
-                        <createTask v-for="item in itemsTask" :key="item.id"></createTask>
+                        <createTask v-for="itemTask in itemsTask" :key="itemTask.id" v-on:edit-title="titleTask"></createTask>
                         <!-- <p class="todolist__opacity-text todolist__opacity-text_big">У вас пока нет задач.</p> -->
                     </div>
                 </div>
@@ -45,17 +45,26 @@
                         <div class="todolist__text-ellipse">
                             <div class="todolist__ellipse"></div>
                             <div class="todolist__text">
-                                Тут будет отображаться<br> выбранная задача.
+                                <!-- {{item.title}} -->
                             </div>
                         </div>
                         <img src="./images/pen.png" alt="pen" class="todolist__pen">
                     </div>
                     <div class="todolist__dropdown" v-if="checkDropDown">
-                        <p class ="todolist__dropdown-description">
-                            <span>
-                                Risus, augue arcu dolor tristique velit, fermentum viverra. Pellentesque pulvinar risus aliquam blandit.
-                            </span>
+                        <p class ="todolist__dropdown-description" v-if="checkTextArea" @click="clickTextArea">
+                            {{textArea}}
                         </p>
+                        <textarea 
+                            v-else
+                            class="todolist__dropdown-description todolist__dropdown-description_textarea" 
+                            maxlength="100" 
+                            v-model="textArea"
+                            @blur="cancelEdit()"
+                            @keyup.enter="cancelEdit()"
+                            @keyup.esc="cancelEdit()"
+                            v-focus
+                        >
+                        </textarea>
                     </div>
                     <div class="todolist__description">
                         <div class="todolist__title-sub-task">Подзадачи</div>
@@ -112,6 +121,9 @@ export default{
             checkArrowRotate: false,
             checkDesTask: false,
             checkDesBckg: false,
+            textArea: 'Risus, augue arcu dolor tristique velit, fermentum viverra. Pellentesque pulvinar risus aliquam blandit.',
+            checkTextArea: true,
+            titleTask: "Задача",
             itemsSubTask: [
                 {
                     id: 1,
@@ -128,6 +140,13 @@ export default{
         logo,
         createSubtask,
         createTask
+    },
+    directives:{
+        focus:{
+            inserted: function(el){
+                el.focus()
+            }
+        }
     },
     methods: {
         hoverButton(){
@@ -163,6 +182,12 @@ export default{
         },
         addItemTask(){
             this.itemsTask.push({ });
+        },
+        clickTextArea(){
+            this.checkTextArea = !this.checkTextArea;
+        },
+        cancelEdit(){
+            this.checkTextArea = true;
         }
 
     }
@@ -338,6 +363,8 @@ export default{
         &__dropdown{
             background: #FFFFFF;
             padding: 0 36px;
+            display: flex;
+            align-items: flex-end;
         }
         &__dropdown-description{
             background: #FFFFFF;
@@ -349,6 +376,16 @@ export default{
             font-size: 11px;
             line-height: 16px;
             color: #292E4E;
+            max-width: 363px;
+            width: 100%;
+            word-wrap: break-word;
+            &_textarea{
+            border:none;
+            outline: none;
+            resize: none;
+            overflow: auto;
+            }
+
         }
         &__description{
             background-color: #615AFE;

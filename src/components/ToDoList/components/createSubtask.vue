@@ -24,8 +24,9 @@
                     @blur="doneEdit()"
                     @keyup.enter="doneEdit()"
                     @keyup.esc="cancelEdit()"
+                    maxlength="50"
                 > 
-                <img src="../images/pen.png" alt="pen" v-if="checkSubPen" width="16" height="16" style="margin-left: 10px" @click = "editText">
+                <img src="../images/pen.png" alt="pen" v-if="checkSubPen" width="16" height="16" style="margin-left: 10px" @click = "editText" >
             </div>
             <div class="todolist__time-cross">
                 <div class="todolist__time">
@@ -137,6 +138,8 @@ export default {
             font-family: Roboto;
             font-size: 12px;
             color: #615AFE;
+            max-width: 180px;
+            word-wrap: break-word;
             &_bckg{
                 background: #E3E7FF;
             }

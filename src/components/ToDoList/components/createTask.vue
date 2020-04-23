@@ -10,15 +10,15 @@
             @mouseleave="hoverItemTask"
             @mouseenter="hoverItemTask"
             @mousedown="clickItemTask"
-            @mouseup="clickItemTask"
+            @mouseup="clickItemTask"   
         >
             <div class="todolist__checkbox-name">
                 <div class="todolist__urgency"></div>
                 <div class="todolist__ellipse-mini"></div>
-                <div class="todolist__text-task" v-if="editBullion">
+                <p class="todolist__text-task" v-if="editBullion" wrap="soft">
                     {{item.title}}
-                </div>
-                <input 
+                </p>
+                <input
                     type="text" 
                     v-model="item.title" 
                     v-else 
@@ -28,6 +28,7 @@
                     @blur="doneEdit()"
                     @keyup.enter="doneEdit()"
                     @keyup.esc="cancelEdit()"
+                    maxlength="50"
                 > 
                 <img src="../images/pen.png" alt="pen" v-if="checkPen" width="24" height="24" style="margin-left: 10px" @click = "editText">
             </div>
@@ -153,7 +154,10 @@ export default {
             font-family: Roboto;
             font-size: 16px;
             color: #615AFE;
+            margin: 0;
             margin-left: 13px;
+            max-width: 180px;
+            word-wrap: break-word;
         }
     }
     .todolist{//item-task-left
