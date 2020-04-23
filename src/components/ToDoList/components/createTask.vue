@@ -25,6 +25,9 @@
                     v-focus 
                     class="todolist__text-task todolist__editInput" 
                     :class="{darkWhiteBackgroundTask: checkBackgraundTask}"
+                    @blur="doneEdit()"
+                    @keyup.enter="doneEdit()"
+                    @keyup.esc="cancelEdit()"
                 > 
                 <img src="../images/pen.png" alt="pen" v-if="checkPen" width="24" height="24" style="margin-left: 10px" @click = "editText">
             </div>
@@ -95,12 +98,14 @@ export default {
         editText(){
             this.editBullion = !this.editBullion;
         },
-        // doneEdit(){
-        //     this.editBullion == true;
-        // },
-        // cancelEdit(){
-        //     this.editBullion == true;
-        // }
+        doneEdit(){
+            this.checkPen = false;
+            this.editBullion = true;
+        },
+        cancelEdit(){
+            this.checkPen = false;
+            this.editBullion = true;
+        }
     }
 }
 </script>

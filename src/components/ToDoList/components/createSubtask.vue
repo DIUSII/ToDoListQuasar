@@ -4,15 +4,28 @@
             class="todolist__sub-item" 
             v-for="(itemSub, index) in itemsSub" 
             :key="itemSub.id" 
-             @mouseleave="hoverItemSubTask"
+            @mouseleave="hoverItemSubTask"
             @mouseenter="hoverItemSubTask"
+            @mousedown="clickItemSubTask"
+            @mouseup="clickItemSubTask"
         >
             <div class="todolist__checkbox-sub-task">
                 <div class="todolist__ellipse-sub"></div>
-                <div class="todolist__title-sub">
+                <div class="todolist__title-sub" v-if="editBullion">
                     {{itemSub.title}}
                 </div>
-                <img src="../images/pen.png" alt="pen" v-if="checkSubPen" width="16" height="16" style="margin-left: 10px" >
+                <input 
+                    type="text" 
+                    v-model="itemSub.title" 
+                    v-else 
+                    v-focus 
+                    class="todolist__title-sub todolist__editInput" 
+                    :class="{darkBlueBackgroundTask: checkBackgraundTask}"
+                    @blur="doneEdit()"
+                    @keyup.enter="doneEdit()"
+                    @keyup.esc="cancelEdit()"
+                > 
+                <img src="../images/pen.png" alt="pen" v-if="checkSubPen" width="16" height="16" style="margin-left: 10px" @click = "editText">
             </div>
             <div class="todolist__time-cross">
                 <div class="todolist__time">
@@ -43,11 +56,20 @@ export default {
             checkHoverCross: false,
             checkClickCross: false,
             checkSubPen:false,
+            editBullion: true,
+            checkBackgraundTask: false,
             itemsSub: [
                 {   
                     title: "Подзадача "
                 }
             ]
+        }
+    },
+    directives:{
+        focus:{
+            inserted: function(el){
+                el.focus()
+            }
         }
     },
     methods: {
@@ -63,6 +85,20 @@ export default {
         hoverItemSubTask(){
             this.checkSubPen = !this.checkSubPen;
         },
+        clickItemSubTask(){
+            this.checkBackgraundTask = !this.checkBackgraundTask;
+        },
+        doneEdit(){
+            this.checkSubPen = false;
+            this.editBullion = true;
+        },
+        cancelEdit(){
+            this.checkSubPen = false;
+            this.editBullion = true;
+        },
+        editText(){
+            this.editBullion = !this.editBullion;
+        },
     }
 }
 </script>
@@ -70,6 +106,9 @@ export default {
     .blueLightBackgroundCross{
         background: url('../images/white-cross.png') no-repeat 60% 45% !important;
         background-color: #615AFE !important;
+    }
+    .darkBlueBackgroundTask{
+        background-color: #E3E7FF !important;
     }
     .blueDarkBackgroundCross{
         background: url('../images/white-cross.png') no-repeat 60% 45% !important;
@@ -86,6 +125,11 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+        &__todolist__text-sub-task{
+            font-family: Roboto;
+            font-size: 12px;
+            color: #615AFE;
         }
         &__checkbox-sub-task{
             display: flex;
