@@ -21,17 +21,17 @@
                     v-focus 
                     class="todolist__title-sub todolist__editInput todolist__title-sub_bckg" 
                     :class="{darkBlueBackgroundTask: checkBackgraundTask}"
-                    @blur="doneEdit()"
-                    @keyup.enter="doneEdit()"
-                    @keyup.esc="cancelEdit()"
+                    @blur="doneOrCanselEdit()"
+                    @keyup.enter="doneOrCanselEdit()"
+                    @keyup.esc="doneOrCanselEdit()"
                     maxlength="50"
                 > 
-                <img src="../images/pen.png" alt="pen" v-if="checkSubPen" width="16" height="16" style="margin-left: 10px" @click = "editText" >
+                <img src="../../images/pen.png" alt="pen" v-if="checkSubPen" width="16" height="16" style="margin-left: 10px" @click = "editText" >
             </div>
             <div class="todolist__time-cross">
                 <div class="todolist__time">
-                    <div class="todolist__old-time-sub">30.05.20 12:34</div>
-                    <div class="todolist__new-time-sub">05.06.20 15:12</div>
+                    <div class="todolist__old-time-sub">{{addDateTask}}{{addTimeTask}}</div>
+                    <div class="todolist__new-time-sub">{{editDate}}{{editTime}}</div>
                 </div>
                 <div class="todolist__cross-sub"
                     :class="{
@@ -59,6 +59,10 @@ export default {
             checkSubPen:false,
             editBullion: true,
             checkBackgraundTask: false,
+            addDateTask: this.$parent.$options.data().fullDate,
+            addTimeTask: this.$parent.$options.data().fullTime,
+            editTime: this.$parent.$options.data().fullTime,
+            editDate: this.$parent.$options.data().fullDate,
             itemsSub: [
                 {   
                     title: "Подзадача "
@@ -89,15 +93,30 @@ export default {
         clickItemSubTask(){
             this.checkBackgraundTask = !this.checkBackgraundTask;
         },
-        doneEdit(){
+        doneOrCanselEdit(){
+            let date = new Date();
+            let shortYear = String(date.getFullYear());
+            let сlerkMouth = "", clerkMinutes ="";
+            if ( (date.getMonth() + 1) < 10){
+                сlerkMouth = "0" + (date.getMonth() + 1);
+            } else {
+                сlerkMouth = (date.getMonth() + 1)
+            }
+            if (date.getMinutes() < 10){
+                clerkMinutes = "0" + date.getMinutes();
+            } else {
+                clerkMinutes = date.getMinutes();
+            }
+            let fullDate = date.getDate() + "." + сlerkMouth + "." + shortYear.slice(2);
+            let fullTime = " " + date.getHours() + ":" + clerkMinutes;
+            this.editDate = fullDate;
+            this.editTime = fullTime;
             this.checkSubPen = false;
             this.editBullion = true;
         },
-        cancelEdit(){
-            this.checkSubPen = false;
-            this.editBullion = true;
-        },
+
         editText(){
+
             this.editBullion = !this.editBullion;
         },
     }
@@ -105,14 +124,14 @@ export default {
 </script>
 <style lang="scss">
     .blueLightBackgroundCross{
-        background: url('../images/white-cross.png') no-repeat 60% 45% !important;
+        background: url('../../images/white-cross.png') no-repeat 60% 45% !important;
         background-color: #615AFE !important;
     }
     .darkBlueBackgroundTask{
         background-color: #E3E7FF !important;
     }
     .blueDarkBackgroundCross{
-        background: url('../images/white-cross.png') no-repeat 60% 45% !important;
+        background: url('../../images/white-cross.png') no-repeat 60% 45% !important;
         background-color: #635FB5 !important;
     }
     .todolist{//sub-task-item
@@ -160,7 +179,7 @@ export default {
             height: 58px;
         }
         &__old-time-sub{
-            background: url('../images/old-time.png') no-repeat 0 center;
+            background: url('../../images/old-time.png') no-repeat 0 center;
             background-size: contain;
             height: 13px;
             width: 85px;
@@ -174,7 +193,7 @@ export default {
             justify-content: flex-end;
         }
         &__new-time-sub{
-            background: url('../images/new-time.png') no-repeat 0 center;
+            background: url('../../images/new-time.png') no-repeat 0 center;
             background-size: contain;
             height: 13px;
             width: 85px;
@@ -187,7 +206,7 @@ export default {
             justify-content: flex-end;
         }
         &__cross-sub{
-            background: url('../images/cross.png') no-repeat 60% 45%;
+            background: url('../../images/cross.png') no-repeat 60% 45%;
             width: 26px;
             height: 26px;
             background-color: #FFF;

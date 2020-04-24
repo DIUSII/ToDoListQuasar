@@ -5,17 +5,18 @@
             :class="{
                 darkWhiteBackgroundTask: checkBackgraundTask
             }"
-            v-for="(item, index) in items" 
+            v-for="item in items" 
             :key="item.id" 
             @mouseleave="hoverItemTask"
             @mouseenter="hoverItemTask"
             @mousedown="clickItemTask"
             @mouseup="clickItemTask"   
+            @click="testTest"
         >
             <div class="todolist__checkbox-name">
                 <div class="todolist__urgency"></div>
                 <div class="todolist__ellipse-mini"></div>
-                <p class="todolist__text-task" v-if="editBullion" wrap="soft">
+                <p class="todolist__text-task" v-if="editBullion">
                     {{item.title}}
                 </p>
                 <input
@@ -25,17 +26,17 @@
                     v-focus 
                     class="todolist__text-task todolist__editInput" 
                     :class="{darkWhiteBackgroundTask: checkBackgraundTask}"
-                    @blur="doneEdit()"
-                    @keyup.enter="doneEdit()"
-                    @keyup.esc="cancelEdit()"
+                    @blur="doneOrCancelEdit()"
+                    @keyup.enter="doneOrCancelEdit()"
+                    @keyup.esc="doneOrCancelEdit()"
                     maxlength="50"
                 > 
-                <img src="../images/pen.png" alt="pen" v-if="checkPen" width="24" height="24" style="margin-left: 10px" @click = "editText">
+                <img src="../../images/pen.png" alt="pen" v-if="checkPen" width="24" height="24" style="margin-left: 10px" @click = "editText">
             </div>
             <div class="todolist__time-progress">
                 <div class="todolist__time">
-                    <div class="todolist__old-time">30.05.20 <span class="todolist__hour">12:34</span></div>
-                    <div class="todolist__new-time">05.06.20 <span class="todolist__hour">15:12</span></div>
+                    <div class="todolist__old-time">{{addDateTask}}<span class="todolist__hour">{{addTimeTask}}</span></div>
+                    <div class="todolist__new-time">{{editDate}}<span class="todolist__hour">{{editTime}}</span></div>
                 </div>
                 <div class="todolist__progress">
                     <div 
@@ -48,7 +49,7 @@
                         @mouseover="hoverCross"
                         @mousedown="clickCross"
                         @mouseup="clickCross"
-                        @click="deleteItem(index)"
+                        @click="deleteItem"
                     >
                     </div>
                 </div>
@@ -66,6 +67,11 @@ export default {
             checkHoverCross: false,
             checkClickCross: false,
             editBullion: true,
+            addDateTask: this.$parent.$options.data().fullDate,
+            addTimeTask: this.$parent.$options.data().fullTime,
+            editTime: this.$parent.$options.data().fullTime,
+            editDate: this.$parent.$options.data().fullDate,
+            testw: "afsdfsd",
             items: [
                 {   
                     title: "задача "
@@ -93,19 +99,35 @@ export default {
         clickCross(){
             this.checkClickCross = !this.checkClickCross;
         },
-        deleteItem(index){
-            this.items.splice(index, 1);
+        deleteItem(){
+            this.items.pop();
         },
         editText(){
             this.editBullion = !this.editBullion;
         },
-        doneEdit(){
+        doneOrCancelEdit(){
+            let date = new Date();
+            let shortYear = String(date.getFullYear());
+            let сlerkMouth = "", clerkMinutes ="";
+            if ( (date.getMonth() + 1) < 10){
+                сlerkMouth = "0" + (date.getMonth() + 1);
+            } else {
+                сlerkMouth = (date.getMonth() + 1)
+            }
+            if (date.getMinutes() < 10){
+                clerkMinutes = "0" + date.getMinutes();
+            } else {
+                clerkMinutes = date.getMinutes();
+            }
+            let fullDate = date.getDate() + "." + сlerkMouth + "." + shortYear.slice(2);
+            let fullTime = date.getHours() + ":" + clerkMinutes;
+            this.editDate = fullDate;
+            this.editTime = fullTime;
             this.checkPen = false;
             this.editBullion = true;
         },
-        cancelEdit(){
-            this.checkPen = false;
-            this.editBullion = true;
+        testTest(){
+            this.testw = this.$parent.$options.data().test;
         }
     }
 }
@@ -175,7 +197,7 @@ export default {
 
         }
         &__old-time{
-            background: url('../images/old-time.png') no-repeat 0 center;
+            background: url('../../images/old-time.png') no-repeat 0 center;
             background-size: contain;
             height: 17px;
             width: 100px;
@@ -190,7 +212,7 @@ export default {
             justify-content: flex-end;
         }
         &__new-time{
-            background: url('../images/new-time.png') no-repeat 0 center;
+            background: url('../../images/new-time.png') no-repeat 0 center;
             background-size: contain;
             height: 17px;
             width: 100px;
@@ -210,7 +232,7 @@ export default {
             margin-left: 2px;
         }
         &__cross{
-            background: url('../images/cross.png') no-repeat 60% 45%;
+            background: url('../../images/cross.png') no-repeat 60% 45%;
             width: 26px;
             height: 26px;
             margin: 0 auto;
