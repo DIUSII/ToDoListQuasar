@@ -12,6 +12,7 @@
             <create-task 
                 v-for="itemTask in itemsTask" 
                 :key="itemTask.id" 
+                @titleArea="testTest($event)"
             >{{titleTask}}</create-task>
             <!-- <p class="todolist__opacity-text todolist__opacity-text_big" v-if="itemsTask.length === 0">У вас пока нет задач.</p> -->
         </div>
@@ -22,16 +23,25 @@ import createTask from './createTask/createTask'
 import buttonEllipse from './buttonEllipse/buttonEllipse'
 let date = new Date();
 let shortYear = String(date.getFullYear());
-let сlerkMouth = "", clerkMinutes ="";
+let сlerkMouth = "", clerkMinutes ="", clerkDays = "", clerkHours = "";
 export default {
     name: "task",
     data(){
         return{
             titleTask: "Задача",
+            fullDate:   clerkDays + "." + сlerkMouth + "." + shortYear.slice(2),
+            fullTime:   clerkHours + ":" + clerkMinutes,
+            title: '',
             itemsTask: [
+                // {
+                //     // id: 1,
+                //     // itemSub: [
+                //     //     {
+                //     //         id: 1,
+                //     //     }
+                //     // ]
+                // }
             ],
-            fullDate:   date.getDate() + "." + сlerkMouth + "." + shortYear.slice(2),
-            fullTime: date.getHours() + ":" + clerkMinutes,
         }
     },
     components: {
@@ -51,7 +61,20 @@ export default {
             } else {
                 clerkMinutes = date.getMinutes();
             }
+            if( date.getDate() < 10){
+                clerkDays = "0" + date.getDate(); 
+            } else {
+                clerkDays = date.getDate(); 
+            }
+            if(date.getHours()< 10){
+                clerkHours =  "0" + date.getHours();
+            } else {
+                 clerkHours =  date.getHours();
+            }
             this.itemsTask.push({});
+        },
+        testTest(x){
+            this.title = x;
         }
     }
 }

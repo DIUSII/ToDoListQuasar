@@ -22,7 +22,7 @@ let router = new Router({
     ]
 });
 // if(localStorage.getItem('test') === "1"){
-//     router.push({ path: '/login' })
+    router.push({ path: '/todolist' });
 // }
 // else{
 //     localStorage.setItem('test', 1);

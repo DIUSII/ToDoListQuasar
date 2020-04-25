@@ -4,7 +4,7 @@
             <div class="todolist__text-ellipse">
                 <div class="todolist__ellipse"></div>
                 <div class="todolist__text">
-                    Подзадача
+                    Подзадача{{sadfs}}
                 </div>
             </div>
             <img src="../images/pen.png" alt="pen" class="todolist__pen">
@@ -39,7 +39,7 @@
                 <span class="todolist__description-text" >Описание</span>
                 <span class="todolist__arrow" :class="{arrowRotate: checkArrowRotate}"></span>
             </div>
-            <button-ellipse class="todolist__padding" @click.native="addItemSubTask"></button-ellipse>
+            <button-ellipse class="todolist__padding" @click.native="addItemSubTask" @titleArea="testTest($event)"></button-ellipse>
         </div>
         <div class="todolist__sub-items">
             <create-sub-task v-for="itemSub in itemsSubTask" :key="itemSub.id"></create-sub-task>
@@ -52,7 +52,7 @@ import createSubtask from './createSubTask/createSubtask'
 import buttonEllipse from './buttonEllipse/buttonEllipse'
 let date = new Date();
 let shortYear = String(date.getFullYear());
-let сlerkMouth = "", clerkMinutes = "";
+let сlerkMouth = "", clerkMinutes ="", clerkDays = "", clerkHours = "";
 export default {
     name: "subTask",
     data(){
@@ -61,10 +61,11 @@ export default {
             textArea: 'Risus, augue arcu dolor tristique velit, fermentum viverra. Pellentesque pulvinar risus aliquam blandit.',
             checkTextArea: true,
             checkDesTask: false,
+            sadfs: '',
             checkDesBckg: false,
             checkArrowRotate: false,
-            fullDate:   date.getDate() + "." + сlerkMouth + "." + shortYear.slice(2),
-            fullTime: " " + date.getHours() + ":" + clerkMinutes,
+            fullDate:   clerkDays + "." + сlerkMouth + "." + shortYear.slice(2),
+            fullTime:   " " + clerkHours + ":" + clerkMinutes,
             itemsSubTask: [
                 
             ],
@@ -110,7 +111,20 @@ export default {
             } else {
                 clerkMinutes = date.getMinutes();
             }
+            if( date.getDate() < 10){
+                clerkDays = "0" + date.getDate(); 
+            } else {
+                clerkDays = date.getDate(); 
+            }
+            if(date.getHours()< 10){
+                clerkHours =  "0" + date.getHours();
+            } else {
+                 clerkHours =  date.getHours();
+            }
             this.itemsSubTask.push({});
+        },
+        testTest(x){
+            this.sadfs = x;
         }
     }
 }

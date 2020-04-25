@@ -1,3 +1,4 @@
+
 <template>
     <div class="todolist ">
         <div class="todolist__nav-bar">
@@ -19,12 +20,13 @@
         </div>
         <div class="fixed-container">
             <div class="todolist__menu">
-                <task/>
+                <task />
                 <sub-task></sub-task>
             </div>
         </div>
     </div>
 </template>
+
 <script>
 
 import logo from '../logo/logo'
@@ -36,6 +38,16 @@ export default{
         return{
             checkHoverButton: false,
             checkClickButton: false,
+            itemsTask: [
+                {
+                    id: 1,
+                    itemSub: [
+                        {
+                            id: 1,
+                        }
+                    ]
+                }
+            ]
         }
     },
     components: {

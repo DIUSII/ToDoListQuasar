@@ -96,7 +96,7 @@ export default {
         doneOrCanselEdit(){
             let date = new Date();
             let shortYear = String(date.getFullYear());
-            let сlerkMouth = "", clerkMinutes ="";
+            let сlerkMouth = "", clerkMinutes ="", clerkDays = "", clerkHours = "";
             if ( (date.getMonth() + 1) < 10){
                 сlerkMouth = "0" + (date.getMonth() + 1);
             } else {
@@ -107,8 +107,18 @@ export default {
             } else {
                 clerkMinutes = date.getMinutes();
             }
-            let fullDate = date.getDate() + "." + сlerkMouth + "." + shortYear.slice(2);
-            let fullTime = " " + date.getHours() + ":" + clerkMinutes;
+            if( date.getDate() < 10){
+                clerkDays = "0" + date.getDate(); 
+            } else {
+                clerkDays = date.getDate(); 
+            }
+            if(date.getHours()< 10){
+                clerkHours =  "0" + date.getHours();
+            } else {
+                 clerkHours =  date.getHours();
+            }
+            let fullDate = clerkDays + "." + сlerkMouth + "." + shortYear.slice(2);
+            let fullTime = " " + clerkHours + ":" + clerkMinutes;
             this.editDate = fullDate;
             this.editTime = fullTime;
             this.checkSubPen = false;
