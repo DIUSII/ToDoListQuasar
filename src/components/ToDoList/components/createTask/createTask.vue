@@ -26,10 +26,13 @@
                     v-focus 
                     class="todolist__text-task todolist__editInput" 
                     :class="{darkWhiteBackgroundTask: checkBackgraundTask}"
-                    @blur="doneOrCancelEdit()"
+                    @blur="doneOrCancelEdit"
                     @keyup.enter="doneOrCancelEdit()"
                     @keyup.esc="doneOrCancelEdit()"
+                    @mouseleave="checkPen = true"
+                    @mouseenter="checkPen = false"
                     maxlength="50"
+                    
                 > 
                 <img src="../../images/pen.png" alt="pen" v-if="checkPen" width="24" height="24" style="margin-left: 10px" @click = "editText">
             </div>
@@ -72,9 +75,10 @@ export default {
             editTime: this.$parent.$options.data().fullTime,
             editDate: this.$parent.$options.data().fullDate,
             testw: "afsdfsd",
+            kaka: false,
             items: [
                 {   
-                    title: "задача "
+                    title: "",
                 }
             ]
         }
@@ -101,6 +105,7 @@ export default {
         },
         deleteItem(){
             this.items.pop();
+            this.$emit('titleArea', "");
         },
         editText(){
             this.editBullion = !this.editBullion;
@@ -108,33 +113,28 @@ export default {
         doneOrCancelEdit(){
             let date = new Date();
             let shortYear = String(date.getFullYear());
-            let сlerkMouth = "", clerkMinutes ="", clerkDays = "", clerkHours = "";
-            if ( (date.getMonth() + 1) < 10){
-                сlerkMouth = "0" + (date.getMonth() + 1);
-            } else {
-                сlerkMouth = (date.getMonth() + 1)
+            let obj = {
+                month:(date.getMonth() + 1),
+                minutes: date.getMinutes(),
+                days: date.getDate(),
+                hours: date.getHours()
             }
-            if (date.getMinutes() < 10){
-                clerkMinutes = "0" + date.getMinutes();
-            } else {
-                clerkMinutes = date.getMinutes();
+            let i=0;
+            for(let item in obj){
+                if(obj[item] < 10){
+                    item = "0" + obj[item];
+                } else {
+                    item = obj[item];
+                }
+                obj[Object.keys(obj)[i]] = item;
+                i++;
             }
-            if( date.getDate() < 10){
-                clerkDays = "0" + date.getDate(); 
-            } else {
-                clerkDays = date.getDate(); 
-            }
-            if(date.getHours()< 10){
-                clerkHours =  "0" + date.getHours();
-            } else {
-                 clerkHours =  date.getHours();
-            }
-            let fullDate = clerkDays + "." + сlerkMouth + "." + shortYear.slice(2);
-            let fullTime = clerkHours + ":" + clerkMinutes;
+            let fullDate = obj.days + "." + obj.month + "." + shortYear.slice(2);
+            let fullTime = obj.hours + ":" + obj.minutes;
             this.editDate = fullDate;
             this.editTime = fullTime;
-            this.checkPen = false;
             this.editBullion = true;
+            this.$emit('titleArea', this.items[0].title);
         },
         testTest(){
             this.$emit('titleArea', this.items[0].title);

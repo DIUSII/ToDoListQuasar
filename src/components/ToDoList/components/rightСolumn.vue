@@ -4,7 +4,7 @@
             <div class="todolist__text-ellipse">
                 <div class="todolist__ellipse"></div>
                 <div class="todolist__text">
-                    Подзадача{{sadfs}}
+                    {{titleTextSub}}
                 </div>
             </div>
             <img src="../images/pen.png" alt="pen" class="todolist__pen">
@@ -55,6 +55,7 @@ let shortYear = String(date.getFullYear());
 let сlerkMouth = "", clerkMinutes ="", clerkDays = "", clerkHours = "";
 export default {
     name: "subTask",
+    props: ['titleTextSub'],
     data(){
         return {
             checkDropDown: false,
@@ -101,27 +102,25 @@ export default {
         },
         addItemSubTask(){
             date = new Date();
-            if ( (date.getMonth() + 1) < 10){
-                сlerkMouth = "0" + (date.getMonth() + 1);
-            } else {
-                сlerkMouth = (date.getMonth() + 1)
+            let obj = {
+                month:(date.getMonth() + 1),
+                minutes: date.getMinutes(),
+                days: date.getDate(),
+                hours: date.getHours()
             }
-            if (date.getMinutes() < 10){
-                clerkMinutes = "0" + date.getMinutes();
-            } else {
-                clerkMinutes = date.getMinutes();
+            let i=0;
+            for(let item in obj){
+                if(obj[item] < 10){
+                    item = "0" + obj[item];
+                } else {
+                    item = obj[item];
+                }
+                obj[Object.keys(obj)[i]] = item;
+                i++;
             }
-            if( date.getDate() < 10){
-                clerkDays = "0" + date.getDate(); 
-            } else {
-                clerkDays = date.getDate(); 
-            }
-            if(date.getHours()< 10){
-                clerkHours =  "0" + date.getHours();
-            } else {
-                 clerkHours =  date.getHours();
-            }
+            сlerkMouth = obj.month; clerkMinutes =obj.minutes; clerkDays = obj.days; clerkHours = obj.hours;
             this.itemsSubTask.push({});
+            this.$emit('pushInItemTask', this.itemsSubTask)
         },
         testTest(x){
             this.sadfs = x;

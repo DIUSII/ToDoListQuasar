@@ -51,30 +51,27 @@ export default {
     methods: {
         addItemTask(){
             date = new Date();
-            if ( (date.getMonth() + 1) < 10){
-                сlerkMouth = "0" + (date.getMonth() + 1);
-            } else {
-                сlerkMouth = (date.getMonth() + 1)
+            let i = 0;
+            let obj = {
+                month:(date.getMonth() + 1),
+                minutes: date.getMinutes(),
+                days: date.getDate(),
+                hours: date.getHours()
             }
-            if (date.getMinutes() < 10){
-                clerkMinutes = "0" + date.getMinutes();
-            } else {
-                clerkMinutes = date.getMinutes();
+            for(let item in obj){
+                if(obj[item] < 10){
+                    item = "0" + obj[item];
+                } else {
+                    item = obj[item];
+                }
+                obj[Object.keys(obj)[i]] = item;
+                i++;
             }
-            if( date.getDate() < 10){
-                clerkDays = "0" + date.getDate(); 
-            } else {
-                clerkDays = date.getDate(); 
-            }
-            if(date.getHours()< 10){
-                clerkHours =  "0" + date.getHours();
-            } else {
-                 clerkHours =  date.getHours();
-            }
+            сlerkMouth = obj.month; clerkMinutes =obj.minutes; clerkDays = obj.days; clerkHours = obj.hours;
             this.itemsTask.push({});
         },
         testTest(x){
-            this.title = x;
+            this.$emit('titleArea', x)
         }
     }
 }
