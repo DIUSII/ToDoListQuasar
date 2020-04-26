@@ -3,17 +3,25 @@
         <div class="todolist__main-panel">
             <div class="todolist__filter">
                 <span class="todolist__span">Задачи</span>
-                <img src="../images/sorting.png" alt="sorting" class="todolist__sorting">
-                <img src='../images/filter.png' alt="filter">
+                <modal-filter-sorting></modal-filter-sorting>
             </div>
             <button-ellipse @click.native="addItemTask"></button-ellipse>
         </div>
         <div class="todolist__items">
             <create-task 
-                v-for="itemTask in itemsTask" 
-                :key="itemTask.id" 
+                v-for="(itemTask, index) in itemsTask" 
+                :key="itemTask.index" 
                 @titleArea="testTest($event)"
+                @viewDeleteTask="viewDeleteModalTask($event)"
+                @click.native="broadcastIndex(index)"
             >{{titleTask}}</create-task>
+            <delete-modal-task 
+                class="todolist__delete-modal-task" 
+                v-show="checkDeleteModalTask" 
+                @cancelDeleteTask="cancelDeleteTask($event)"
+                :indexTask="broadcastIndexInComponent"
+                @deleteModalIndex="deleteModal($event)"
+            ></delete-modal-task>
             <!-- <p class="todolist__opacity-text todolist__opacity-text_big" v-if="itemsTask.length === 0">У вас пока нет задач.</p> -->
         </div>
     </div>
@@ -21,32 +29,33 @@
 <script>
 import createTask from './createTask/createTask'
 import buttonEllipse from './buttonEllipse/buttonEllipse'
+import modalFilterSorting from './model/filterSorting'
+import deleteModalTask from './model/deleteModalTask'
 let date = new Date();
 let shortYear = String(date.getFullYear());
 let сlerkMouth = "", clerkMinutes ="", clerkDays = "", clerkHours = "";
 export default {
     name: "task",
+    props:['pushArray'],
     data(){
         return{
             titleTask: "Задача",
             fullDate:   clerkDays + "." + сlerkMouth + "." + shortYear.slice(2),
             fullTime:   clerkHours + ":" + clerkMinutes,
             title: '',
+            checkDeleteModalTask: false,
+            broadcastIndexInComponent: "",
             itemsTask: [
-                // {
-                //     // id: 1,
-                //     // itemSub: [
-                //     //     {
-                //     //         id: 1,
-                //     //     }
-                //     // ]
-                // }
+                
+
             ],
         }
     },
     components: {
         "create-task":createTask,
         "button-ellipse": buttonEllipse,
+        'modal-filter-sorting': modalFilterSorting,
+        'delete-modal-task': deleteModalTask
     },
     methods: {
         addItemTask(){
@@ -68,10 +77,26 @@ export default {
                 i++;
             }
             сlerkMouth = obj.month; clerkMinutes =obj.minutes; clerkDays = obj.days; clerkHours = obj.hours;
-            this.itemsTask.push({});
+            this.itemsTask.push({'title': this.title});
         },
         testTest(x){
+            this.title = x;
             this.$emit('titleArea', x)
+        },
+        viewDeleteModalTask(x){
+            this.checkDeleteModalTask = x;
+        },
+        cancelDeleteTask(x){
+            this.checkDeleteModalTask = x;
+        },
+        broadcastIndex(index){
+            this.broadcastIndexInComponent = index;
+            console.log(index);
+        },
+        deleteModal(index){
+            // this.itemsTask.push({index});
+            console.log(this.itemsTask);
+            this.itemsTask.splice(index,1);
         }
     }
 }
@@ -101,6 +126,7 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+             position: relative;
             // width: ;
         }
         &__span{
@@ -121,6 +147,15 @@ export default {
             margin-bottom: 40px;
             padding-top: 26px;
             overflow-y: scroll;
+            position: relative;
+        }
+        &__delete-modal-task{
+            z-index:1000;
+            position: absolute;
+            top: 30%;
+            left:15%;
+            margin: auto;
+
         }
     }
 </style>

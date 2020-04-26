@@ -5,7 +5,7 @@
             <div class="fixed-container todolist__box">
                 <logo/>
                 <div class ="todolist__user">
-                    <p class="todolist__nick-name"> Никнейм1234{{titleSubTask}}</p>
+                    <p class="todolist__nick-name">Никнейм1234</p>
                     <button 
                     class="todolist__button todolist__button_white"
                     :class="{blueBorderTo: checkHoverButton, backgroundDarkBlue: checkClickButton}"
@@ -20,8 +20,8 @@
         </div>
         <div class="fixed-container">
             <div class="todolist__menu">
-                <task @titleArea="titleArea($event)" />
-                <sub-task :titleTextSub="titleSubTask"></sub-task>
+                <task @titleArea="titleArea($event)"/>
+                <sub-task :titleTextSub="titleSubTask" ></sub-task>
             </div>
         </div>
     </div>
@@ -39,16 +39,6 @@ export default{
             checkHoverButton: false,
             checkClickButton: false,
             titleSubTask: "",
-            itemsTask: [
-                {
-                    id: 1,
-                    itemSub: [
-                        {
-                            id: 1,
-                        }
-                    ]
-                }
-            ]
         }
     },
     components: {
@@ -69,13 +59,15 @@ export default{
         },
         clickButton(){
             this.checkClickButton = !this.checkClickButton;
+            console.log(this.itemsTask);
         },
         titleArea(x){
             this.titleSubTask = x;
-        }
+        },
 
     }
 }
+
 </script>
 <style lang="scss">
     body{

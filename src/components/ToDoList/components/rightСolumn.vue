@@ -3,8 +3,11 @@
         <div class="todolist__name-task">
             <div class="todolist__text-ellipse">
                 <div class="todolist__ellipse"></div>
-                <div class="todolist__text">
+                <div class="todolist__text" v-if='titleTextSub != ""'>
                     {{titleTextSub}}
+                </div>
+                <div class="todolist__text" v-if='titleTextSub == ""'>
+                    Здесь будет ваш текст
                 </div>
             </div>
             <img src="../images/pen.png" alt="pen" class="todolist__pen">

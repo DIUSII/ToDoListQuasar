@@ -5,7 +5,7 @@
             :class="{
                 darkWhiteBackgroundTask: checkBackgraundTask
             }"
-            v-for="item in items" 
+            v-for="(item,index) in items" 
             :key="item.id" 
             @mouseleave="hoverItemTask"
             @mouseenter="hoverItemTask"
@@ -52,7 +52,7 @@
                         @mouseover="hoverCross"
                         @mousedown="clickCross"
                         @mouseup="clickCross"
-                        @click="deleteItem"
+                        @click="deleteItem(index)"
                     >
                     </div>
                 </div>
@@ -104,8 +104,9 @@ export default {
             this.checkClickCross = !this.checkClickCross;
         },
         deleteItem(){
-            this.items.pop();
+            // this.items.pop();
             this.$emit('titleArea', "");
+            this.$emit('viewDeleteTask', true);
         },
         editText(){
             this.editBullion = !this.editBullion;
@@ -148,6 +149,7 @@ export default {
     }
     .todolist{//item-task-right
         &__item-task{
+            margin: 0 20px 20px 50px;
             max-width: 495px;
             width: 100%;
             display: flex;
@@ -156,7 +158,6 @@ export default {
             background-color: #FFF;
             box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
-            margin: 0 auto 20px;
         }
         &__editInput{
             border: none;
