@@ -78,7 +78,7 @@ export default {
             kaka: false,
             items: [
                 {   
-                    title: "",
+                    title: "Задача",
                 }
             ]
         }

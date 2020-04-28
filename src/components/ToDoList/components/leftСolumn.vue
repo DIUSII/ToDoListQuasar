@@ -20,6 +20,7 @@
                 v-show="checkDeleteModalTask" 
                 @cancelDeleteTask="cancelDeleteTask($event)"
                 :indexTask="broadcastIndexInComponent"
+                :titleModalDeleteTask='title'
                 @deleteModalIndex="deleteModal($event)"
             ></delete-modal-task>
             <!-- <p class="todolist__opacity-text todolist__opacity-text_big" v-if="itemsTask.length === 0">У вас пока нет задач.</p> -->
@@ -43,8 +44,8 @@ export default {
             titleTask: "Задача",
             fullDate:   clerkDays + "." + сlerkMouth + "." + shortYear.slice(2),
             fullTime:   clerkHours + ":" + clerkMinutes,
-            title: '',
             i: 0,
+            title: "", 
             checkDeleteModalTask: false,
             broadcastIndexInComponent: -1,
             itemsTask: [                
@@ -97,11 +98,12 @@ export default {
             console.log(this.itemsTask);
             this.broadcastIndexInComponent = index;
             this.$emit('indexArrayTask', index);
+            // ths
         },
         deleteModal(index){
+            this.$emit('titleArea', "");
             this.$emit('indexArrayTask', "");
             this.itemsTask.splice(index,1);
-
             // if(kata > this.itemsTask.length){
             //     for(let d = 0; d < this.itemsTask.length; d++){
             //         this.itemsTask[d].id = this.nextTodDoId;

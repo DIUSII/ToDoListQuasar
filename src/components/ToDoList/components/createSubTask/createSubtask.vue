@@ -12,11 +12,11 @@
             <div class="todolist__checkbox-sub-task">
                 <div class="todolist__ellipse-sub"></div>
                 <div class="todolist__title-sub" v-if="editBullion">
-                    {{itemSub.title}}
+                    {{pushInputTitleSubTask}}
                 </div>
                 <input 
                     type="text" 
-                    v-model="itemSub.title" 
+                    v-model="pushInputTitleSubTask" 
                     v-else 
                     v-focus 
                     class="todolist__title-sub todolist__editInput todolist__title-sub_bckg" 
@@ -54,7 +54,7 @@
 <script>
 export default {
     name: "createSubTask",
-    props: ['recieveIndexSubItem'],
+    props: ['recieveIndexSubItem','pushInputTitleSubTask'],
     data(){
         return {
             checkHoverCross: false,
@@ -88,7 +88,7 @@ export default {
             this.checkClickCross = !this.checkClickCross;
         },
         deleteItemSub(){
-            this.$emit('deleteItemSubTask', this.recieveIndexSubItem);
+            this.$emit('deleteItemSubTask', true);
             // this.itemsSub.splice(index, 1);
         },
         hoverItemSubTask(){
@@ -149,7 +149,7 @@ export default {
             border: 1px solid #615AFE;
             box-sizing: border-box;
             border-radius: 20px;
-            margin: 0px auto 14px;
+            margin: 0px 0px 14px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;

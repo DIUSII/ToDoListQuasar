@@ -13,8 +13,14 @@
                     @mouseleave="hoverButton"
                     @mousedown="clickButton"
                     @mouseup="clickButton"
-                    
+                    @click="clickLogOut"
                     >Выход</button>
+                    <log-out 
+                        v-show="checkLogOut" 
+                        class="todolist__log-out" 
+                        @cancelLogOut="cancelLogOut($event)"
+                        @YesLogOut="YesLogOut($event)"
+                    ></log-out>
                 </div>
             </div>
         </div>
@@ -31,9 +37,22 @@
                     :indexTaskInSubTask="indexTask"
                     :nullArraySubTaskInTask="nullArray"
                     @pushInItemTask="receiveArraySubTask($event)"
+                    @modalWindow="modalWindow($event)"
+                    :pushTitleSubTask="titleInputSub"
                 ></sub-task>
             </div>
         </div>
+        <modal-sub-task 
+            class="todolist__check-modal-sub-task" 
+            v-show="checkSubTaskWindow" 
+            @inputTitleSubTask="pushInputSubTask($event)" 
+            @cancelMobelSubTask="cancelMobelSubTask($event)"
+        ></modal-sub-task>
+        <div 
+            class="todolist__shadow"    
+            v-show="checkSubTaskWindow" 
+            @click="checkSubTaskWindow=false"
+        ></div>
     </div>
 </template>
 
@@ -42,6 +61,9 @@
 import logo from '../logo/logo'
 import task from './components/leftСolumn'
 import SubTask from './components/rightСolumn'
+import logOut from './components/model/logOutWithUser'
+import roter from '../../router/router'
+import modalSubTask from './components/model/createOrEditModalSubTask'
 export default{
     name: "todolist",
     data() {
@@ -52,12 +74,17 @@ export default{
             indexTask: "",
             arraySubTask: "",
             nullArray: "",
+            checkLogOut: false,
+            checkSubTaskWindow: false,
+            titleInputSub: "",
         }
     },
     components: {
         logo,
         task,
-        'sub-task': SubTask
+        'sub-task': SubTask,
+        'log-out': logOut,
+        'modal-sub-task': modalSubTask,
     },
     directives:{
         focus:{
@@ -86,6 +113,27 @@ export default{
         },
         nullSubTask(x){
             this.nullArray = x;
+        },
+        clickLogOut(){
+            this.checkLogOut = true;
+        },
+        cancelLogOut(){
+            this.checkLogOut = false;
+        },
+        YesLogOut(x){
+            if(x == true){
+                roter.push({ path: './login'});
+            }
+            this.checkLogOut = false;
+        },
+        modalWindow(x){
+            this.checkSubTaskWindow = x;
+        },
+        pushInputSubTask(x){
+            this.titleInputSub = x;
+        },
+        cancelMobelSubTask(x){
+            this.checkSubTaskWindow = x;
         }
 
     }
@@ -103,6 +151,7 @@ export default{
         background-color:#E1DFFF !important;
     }
     .todolist{
+        position: relative;
         background-color: #F0EFFF;
         .fixed-container{
             max-width: 1170px;
@@ -147,6 +196,30 @@ export default{
             box-sizing: border-box;
             padding: 15px 34px;
             margin-left: 20px;
+            position: relative;
+        }
+        &__log-out{
+            z-index: 1000;
+            position: absolute;
+            top: 0;
+        }
+        &__check-modal-sub-task{
+            position: absolute;
+            z-index: 1000;
+            top: 35%;
+            margin: auto;
+            left: 0;
+            right: 0;
+
+        }
+        &__shadow{
+            position: absolute;
+            z-index: 15px;
+            background: #323232;
+            opacity: 0.5;
+            width: 100%;
+            height: 100%;
+            top: 0;
         }
     }
     

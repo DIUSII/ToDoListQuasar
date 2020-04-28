@@ -52,7 +52,15 @@
                 @click.native="indexSubTask(index)" 
                 :recieveIndexSubItem="sendIndexSubTask"
                 @deleteItemSubTask="deleteItemSub(index)"
+                :pushInputTitleSubTask="pushTitleSubTask"
             ></create-sub-task>
+            <delete-modal-sub-task 
+            class="todolist__delete-modal-sub-task" 
+            v-show="cancelDeleteSubItem"
+            @cancelDeleteSubTask="cancelDeleteSubTask($event)"
+            :indexSubTask="sendIndexSubTask"
+            @deleteModalIndex="deleteModalIndex($event)"
+            ></delete-modal-sub-task>
             <!-- <p class="todolist__opacity-text" v-if="itemsSubTask.length === 0">В задаче пока нет подзадач.</p> -->
         </div>
     </div>
@@ -60,12 +68,13 @@
 <script>
 import createSubtask from './createSubTask/createSubtask'
 import buttonEllipse from './buttonEllipse/buttonEllipse'
+import deleteModalSubTask from './model/deleteModalSubTask'
 let date = new Date();
 let shortYear = String(date.getFullYear());
 let сlerkMouth = "", clerkMinutes ="", clerkDays = "", clerkHours = "";
 export default {
     name: "subTask",
-    props: ['titleTextSub','indexTaskInSubTask', 'nullArraySubTaskInTask'],
+    props: ['titleTextSub','indexTaskInSubTask', 'nullArraySubTaskInTask','pushTitleSubTask'],
     data(){
         return {
             checkDropDown: false,
@@ -78,6 +87,7 @@ export default {
             fullDate:   clerkDays + "." + сlerkMouth + "." + shortYear.slice(2),
             fullTime:   " " + clerkHours + ":" + clerkMinutes,
             sendIndexSubTask: "",
+            cancelDeleteSubItem: false,
             itemsSubTask: [
                 
             ],
@@ -86,7 +96,8 @@ export default {
     }, 
     components: {
         'create-sub-task': createSubtask,
-        'button-ellipse': buttonEllipse
+        'button-ellipse': buttonEllipse,
+        'delete-modal-sub-task': deleteModalSubTask
     },
     directives:{
         focus:{
@@ -132,11 +143,13 @@ export default {
             }
             сlerkMouth = obj.month; clerkMinutes =obj.minutes; clerkDays = obj.days; clerkHours = obj.hours;
             // if( this.indexTaskInSubTask !== ""){
-            this.itemsSubTask.push({id: this.nextToDoId++});
+                // this.itemsSubTask.push({id: this.nextToDoId++});
             // } 
 
             console.log(this.itemsSubTask);
-            this.$emit('pushInItemTask', this.itemsSubTask)
+            this.$emit('modalWindow', true);
+            this.$emit('pushInItemTask', this.itemsSubTask);
+            this.itemsSubTask.push({id: this.nextToDoId++});
         },
         testTest(x){
             this.sadfs = x;
@@ -144,7 +157,14 @@ export default {
         indexSubTask(index){
             this.sendIndexSubTask = index;
         },
-        deleteItemSub(index){
+        deleteItemSub(){
+            this.cancelDeleteSubItem = true;
+            // this.itemsSubTask.splice(index, 1);
+        },
+        cancelDeleteSubTask(x){
+            this.cancelDeleteSubItem = x;
+        },
+        deleteModalIndex(index){
             this.itemsSubTask.splice(index, 1);
         }
     }
@@ -241,6 +261,7 @@ export default {
             margin-bottom: 40px;
             padding-top: 17px;
             overflow-y:scroll;
+            position: relative;
         }
         &__title-sub-task{
             font-family: Roboto;
@@ -287,6 +308,13 @@ export default {
             height: 10px;
             display: inline-block;
             margin-right: -30px;
+        }
+        &__delete-modal-sub-task{
+            z-index:1000;
+            position: absolute;
+            top: 30%;
+            left:15%;
+            margin: auto;
         }
     }
 </style>

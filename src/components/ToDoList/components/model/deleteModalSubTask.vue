@@ -1,12 +1,12 @@
 <template>
     <div class="deleteModalTask">
-        <div class="delete-modal-task">
-            <p class="delete-modal-task__text">
-                Вы действительно хотите удалить<br> {{titleModalDeleteTask}} из списка задач?
+        <div class="delete-modal-sub-task">
+            <p class="delete-modal-sub-task__text">
+               Вы действительно хотите удалить “Подзадача 1”<br> из списка подзадач задачи “Задача 1”?
             </p>
-            <div class="delete-modal-task__group-btn">
-                <button class="delete-modal-task__btn-delete" style="margin-right: 60px;" @click="deleteTask">Удалить</button>
-                <button class="delete-modal-task__btn-cancel" @click="cancelDeleteTask">Отмена</button>
+            <div class="delete-modal-sub-task__group-btn">
+                <button class="delete-modal-sub-task__btn-delete" style="margin-right: 60px;" @click="deleteSubTask">Удалить</button>
+                <button class="delete-modal-sub-task__btn-cancel" @click="cancelDeleteSubTask">Отмена</button>
             </div>
         </div>
     </div>
@@ -14,29 +14,29 @@
 <script>
 export default {
     name: "deleteModalTask",
-    props: ['indexTask', 'titleModalDeleteTask'],
+    props: ['indexSubTask'],
     data(){
         return{
 
         }
     },
     methods: {
-        cancelDeleteTask(){
-            this.$emit('cancelDeleteTask', false);
+        cancelDeleteSubTask(){
+            this.$emit('cancelDeleteSubTask', false);
         },
-        deleteTask(){
+        deleteSubTask(){
             // console.log(this.indexTask);
-            this.$emit('deleteModalIndex', this.indexTask);
-            this.$emit('cancelDeleteTask', false);
+            this.$emit('deleteModalIndex', this.indexSubTask);
+            this.$emit('cancelDeleteSubTask', false);
         }
     }
 }
 </script>
 <style lang="scss">
-    .delete-modal-task{
-        max-width: 320px;
+    .delete-modal-sub-task{
+        max-width: 326px;
         width: 100%;
-        padding: 21px 52px;
+        padding: 21px 22px;
         background: #343175;
         box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.25);
         border-radius: 20px;
@@ -44,7 +44,7 @@ export default {
             margin-top: 0;
             font-family: Roboto;
             font-weight: 500;
-            font-size: 16px;
+            font-size: 14px;
             text-align: center;
             color: #FFFFFF;
         }
