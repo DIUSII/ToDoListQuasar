@@ -2,7 +2,7 @@
     <div class="createSubTask">
         <div 
             class="todolist__sub-item" 
-            v-for="(itemSub, index) in itemsSub" 
+            v-for="itemSub in itemsSub" 
             :key="itemSub.id" 
             @mouseleave="hoverItemSubTask"
             @mouseenter="hoverItemSubTask"
@@ -44,7 +44,7 @@
                     @mouseenter="hoverItemSubTask"
                     @mousedown="clickCross"
                     @mouseup="clickCross"
-                    @click="deleteItemSub(index)"
+                    @click="deleteItemSub"
                 >
                 </div>
             </div>
@@ -54,6 +54,7 @@
 <script>
 export default {
     name: "createSubTask",
+    props: ['recieveIndexSubItem'],
     data(){
         return {
             checkHoverCross: false,
@@ -86,8 +87,9 @@ export default {
         clickCross(){
             this.checkClickCross = !this.checkClickCross;
         },
-        deleteItemSub(index){
-            this.itemsSub.splice(index, 1);
+        deleteItemSub(){
+            this.$emit('deleteItemSubTask', this.recieveIndexSubItem);
+            // this.itemsSub.splice(index, 1);
         },
         hoverItemSubTask(){
             this.checkSubPen = !this.checkSubPen;

@@ -29,7 +29,7 @@
             </textarea>
         </div>
         <div class="todolist__description">
-            <div class="todolist__title-sub-task">Подзадачи</div>
+            <div class="todolist__title-sub-task">Подзадачи{{indexTaskInSubTask}}</div>
             <div 
                 class="todolist__description-task" 
                 :class="{borderDarkDescription: checkDesTask, backgroundDarkDescription: checkDesBckg }"
@@ -38,6 +38,7 @@
                 @mousedown="clickDescription"
                 @mouseup="clickDescription"
                 @click="clickDropDown"
+                
             >
                 <span class="todolist__description-text" >Описание</span>
                 <span class="todolist__arrow" :class="{arrowRotate: checkArrowRotate}"></span>
@@ -45,7 +46,13 @@
             <button-ellipse class="todolist__padding" @click.native="addItemSubTask" @titleArea="testTest($event)"></button-ellipse>
         </div>
         <div class="todolist__sub-items">
-            <create-sub-task v-for="itemSub in itemsSubTask" :key="itemSub.id"></create-sub-task>
+            <create-sub-task 
+                v-for="(itemSub,index) in itemsSubTask" 
+                :key="itemSub.id" 
+                @click.native="indexSubTask(index)" 
+                :recieveIndexSubItem="sendIndexSubTask"
+                @deleteItemSubTask="deleteItemSub(index)"
+            ></create-sub-task>
             <!-- <p class="todolist__opacity-text" v-if="itemsSubTask.length === 0">В задаче пока нет подзадач.</p> -->
         </div>
     </div>
@@ -58,7 +65,7 @@ let shortYear = String(date.getFullYear());
 let сlerkMouth = "", clerkMinutes ="", clerkDays = "", clerkHours = "";
 export default {
     name: "subTask",
-    props: ['titleTextSub'],
+    props: ['titleTextSub','indexTaskInSubTask', 'nullArraySubTaskInTask'],
     data(){
         return {
             checkDropDown: false,
@@ -70,9 +77,11 @@ export default {
             checkArrowRotate: false,
             fullDate:   clerkDays + "." + сlerkMouth + "." + shortYear.slice(2),
             fullTime:   " " + clerkHours + ":" + clerkMinutes,
+            sendIndexSubTask: "",
             itemsSubTask: [
                 
             ],
+            nextToDoId: 0,
         }
     }, 
     components: {
@@ -122,11 +131,21 @@ export default {
                 i++;
             }
             сlerkMouth = obj.month; clerkMinutes =obj.minutes; clerkDays = obj.days; clerkHours = obj.hours;
-            this.itemsSubTask.push({});
+            // if( this.indexTaskInSubTask !== ""){
+            this.itemsSubTask.push({id: this.nextToDoId++});
+            // } 
+
+            console.log(this.itemsSubTask);
             this.$emit('pushInItemTask', this.itemsSubTask)
         },
         testTest(x){
             this.sadfs = x;
+        },
+        indexSubTask(index){
+            this.sendIndexSubTask = index;
+        },
+        deleteItemSub(index){
+            this.itemsSubTask.splice(index, 1);
         }
     }
 }

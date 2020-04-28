@@ -20,8 +20,18 @@
         </div>
         <div class="fixed-container">
             <div class="todolist__menu">
-                <task @titleArea="titleArea($event)"/>
-                <sub-task :titleTextSub="titleSubTask" ></sub-task>
+                <task 
+                    @titleArea="titleArea($event)" 
+                    @indexArrayTask="indexInSubTask($event)" 
+                    :sendArraySubTask="arraySubTask" 
+                    @nullArraySubTask="nullSubTask($event)"
+                />
+                <sub-task 
+                    :titleTextSub="titleSubTask" 
+                    :indexTaskInSubTask="indexTask"
+                    :nullArraySubTaskInTask="nullArray"
+                    @pushInItemTask="receiveArraySubTask($event)"
+                ></sub-task>
             </div>
         </div>
     </div>
@@ -39,6 +49,9 @@ export default{
             checkHoverButton: false,
             checkClickButton: false,
             titleSubTask: "",
+            indexTask: "",
+            arraySubTask: "",
+            nullArray: "",
         }
     },
     components: {
@@ -64,6 +77,16 @@ export default{
         titleArea(x){
             this.titleSubTask = x;
         },
+        indexInSubTask(x){
+            this.indexTask = x;
+        },
+        receiveArraySubTask(x){
+            this.arraySubTask = x;
+
+        },
+        nullSubTask(x){
+            this.nullArray = x;
+        }
 
     }
 }

@@ -10,7 +10,7 @@
         <div class="todolist__items">
             <create-task 
                 v-for="(itemTask, index) in itemsTask" 
-                :key="itemTask.index" 
+                :key="itemTask.id" 
                 @titleArea="testTest($event)"
                 @viewDeleteTask="viewDeleteModalTask($event)"
                 @click.native="broadcastIndex(index)"
@@ -34,21 +34,23 @@ import deleteModalTask from './model/deleteModalTask'
 let date = new Date();
 let shortYear = String(date.getFullYear());
 let сlerkMouth = "", clerkMinutes ="", clerkDays = "", clerkHours = "";
+// let rty = 0, hut= 0;
 export default {
     name: "task",
-    props:['pushArray'],
+    props:['pushArray', 'sendArraySubTask'],
     data(){
         return{
             titleTask: "Задача",
             fullDate:   clerkDays + "." + сlerkMouth + "." + shortYear.slice(2),
             fullTime:   clerkHours + ":" + clerkMinutes,
             title: '',
+            i: 0,
             checkDeleteModalTask: false,
-            broadcastIndexInComponent: "",
-            itemsTask: [
-                
+            broadcastIndexInComponent: -1,
+            itemsTask: [                
 
             ],
+            nextTodDoId: 0,
         }
     },
     components: {
@@ -77,7 +79,8 @@ export default {
                 i++;
             }
             сlerkMouth = obj.month; clerkMinutes =obj.minutes; clerkDays = obj.days; clerkHours = obj.hours;
-            this.itemsTask.push({'title': this.title});
+            // console.log(Object.keys(this.itemsTask));
+            this.itemsTask.push({id: this.nextTodDoId++});
         },
         testTest(x){
             this.title = x;
@@ -90,13 +93,22 @@ export default {
             this.checkDeleteModalTask = x;
         },
         broadcastIndex(index){
+            this.itemsTask[index].subTask = this.sendArraySubTask;
+            console.log(this.itemsTask);
             this.broadcastIndexInComponent = index;
-            console.log(index);
+            this.$emit('indexArrayTask', index);
         },
         deleteModal(index){
-            // this.itemsTask.push({index});
-            console.log(this.itemsTask);
+            this.$emit('indexArrayTask', "");
             this.itemsTask.splice(index,1);
+
+            // if(kata > this.itemsTask.length){
+            //     for(let d = 0; d < this.itemsTask.length; d++){
+            //         this.itemsTask[d].id = this.nextTodDoId;
+            //         this.nextTodDoId++;
+            //     }
+            // }
+            // this.nextTodDoId = 00;
         }
     }
 }
