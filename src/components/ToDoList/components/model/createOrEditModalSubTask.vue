@@ -16,13 +16,19 @@ export default {
     data(){
         return{
             titleInputSubTask: '',
+            array: [],
+            id: 0,
         }
     },
     methods: {
         createItemSubTask(){
             this.$emit('inputTitleSubTask', this.titleInputSubTask);
             this.$emit('cancelMobelSubTask', false);
+            this.id++;
+            this.array.push({id: this.id,title: this.titleInputSubTask});
             this.titleInputSubTask = "";
+            console.log(this.array);
+            this.$emit('pushArray', this.array);
         }
     }
 }

@@ -52,7 +52,7 @@
                 @click.native="indexSubTask(index)" 
                 :recieveIndexSubItem="sendIndexSubTask"
                 @deleteItemSubTask="deleteItemSub(index)"
-                :pushInputTitleSubTask="pushTitleSubTask"
+                :pushInputTitleSubTask="itemsSubTask[index].title"
             ></create-sub-task>
             <delete-modal-sub-task 
             class="todolist__delete-modal-sub-task" 
@@ -74,7 +74,13 @@ let shortYear = String(date.getFullYear());
 let сlerkMouth = "", clerkMinutes ="", clerkDays = "", clerkHours = "";
 export default {
     name: "subTask",
-    props: ['titleTextSub','indexTaskInSubTask', 'nullArraySubTaskInTask','pushTitleSubTask'],
+    props: [
+        'titleTextSub',
+        'indexTaskInSubTask', 
+        'nullArraySubTaskInTask',
+        'pushTitleSubTask',
+        'pushArray',
+    ],
     data(){
         return {
             checkDropDown: false,
@@ -88,9 +94,8 @@ export default {
             fullTime:   " " + clerkHours + ":" + clerkMinutes,
             sendIndexSubTask: "",
             cancelDeleteSubItem: false,
-            itemsSubTask: [
-                
-            ],
+            titleSubTask: '',
+            itemsSubTask: this.pushArray,
             nextToDoId: 0,
         }
     }, 
@@ -109,6 +114,7 @@ export default {
     methods: {
         clickTextArea(){
             this.checkTextArea = !this.checkTextArea;
+            // console.log(this.itemsSubTask);
         },
         cancelEdit(){
             this.checkTextArea = true;
@@ -142,14 +148,11 @@ export default {
                 i++;
             }
             сlerkMouth = obj.month; clerkMinutes =obj.minutes; clerkDays = obj.days; clerkHours = obj.hours;
-            // if( this.indexTaskInSubTask !== ""){
-                // this.itemsSubTask.push({id: this.nextToDoId++});
-            // } 
-
-            console.log(this.itemsSubTask);
+            // console.log(this.itemsSubTask);
             this.$emit('modalWindow', true);
             this.$emit('pushInItemTask', this.itemsSubTask);
-            this.itemsSubTask.push({id: this.nextToDoId++});
+            this.itemsSubTask;
+            console.log(this.pushArray);
         },
         testTest(x){
             this.sadfs = x;

@@ -39,6 +39,7 @@
                     @pushInItemTask="receiveArraySubTask($event)"
                     @modalWindow="modalWindow($event)"
                     :pushTitleSubTask="titleInputSub"
+                    :pushArray="checkBullionItem"
                 ></sub-task>
             </div>
         </div>
@@ -47,6 +48,7 @@
             v-show="checkSubTaskWindow" 
             @inputTitleSubTask="pushInputSubTask($event)" 
             @cancelMobelSubTask="cancelMobelSubTask($event)"
+            @pushArray="pushArrayW($event)"
         ></modal-sub-task>
         <div 
             class="todolist__shadow"    
@@ -64,6 +66,7 @@ import SubTask from './components/rightСolumn'
 import logOut from './components/model/logOutWithUser'
 import roter from '../../router/router'
 import modalSubTask from './components/model/createOrEditModalSubTask'
+// import axios from 'axios'
 export default{
     name: "todolist",
     data() {
@@ -77,6 +80,8 @@ export default{
             checkLogOut: false,
             checkSubTaskWindow: false,
             titleInputSub: "",
+            checkBullionItem: [],
+            info: null,
         }
     },
     components: {
@@ -99,7 +104,7 @@ export default{
         },
         clickButton(){
             this.checkClickButton = !this.checkClickButton;
-            console.log(this.itemsTask);
+            console.log(this.info);
         },
         titleArea(x){
             this.titleSubTask = x;
@@ -134,7 +139,11 @@ export default{
         },
         cancelMobelSubTask(x){
             this.checkSubTaskWindow = x;
+        },
+        pushArrayW(x){
+            this.checkBullionItem = x;
         }
+        
 
     }
 }

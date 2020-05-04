@@ -65,6 +65,7 @@
 import logo from '../logo/logo.vue';
 import user from './user.json'
 import router from '../../router/router'
+import axios from 'axios'
 let people =  JSON.parse(JSON.stringify(user));
 export default {
     name : "login",
@@ -82,11 +83,20 @@ export default {
             buttonError: false,
             hoverbullion: false,
             buttonBullion: false,
+            userTest: null,
+            testTestGet: null
         }
     },
     components: {
         logo,
     },
+    // created(){
+    //     this.userTest = [this.valueInput, this.valueInputPass];
+    //     let users = JSON.stringify(this.user);
+    //     axios
+    //         .post('http://host1813568.hostland.pro/public/api/login', users);
+    //         // .then(response => (this.info = response.data.bpi));
+    // },
     methods: {
         hoverLogin(){
             this.inputHover = !this.inputHover;
@@ -101,6 +111,22 @@ export default {
             this.buttonBullion = !this.buttonBullion;
         },
         buttonClick(){
+            this.userTest = {
+                    login: this.valueInput, 
+                    password: this.valueInputPass
+                };
+            // let users = JSON.stringify(this.userTest);
+            // console.log(users);
+            axios
+                .post('http://host1813568.hostland.pro/public/api/login', this.userTest)
+                .then(response =>(this.testTestGet = response))
+                .catch(function (error) {
+                    console.log(error)
+                });
+            // axios
+            //     .get('http://host1813568.hostland.pro/public/api/login')
+            //     .then(response =>(this.testTestGet = response));
+            console.log(this.testTestGet.data.user);
             if(this.valueInput === ""){
                 this.inputClick = true;
                 
@@ -115,7 +141,7 @@ export default {
                 this.inputClickPass = false;
             }
             for(let i = 0; i < people.users.length; i++){
-                if(people.users[i].login === this.valueInput && people.users[i].password === this.valueInputPass){
+                if(this.testTestGet.data.user.login === this.valueInput ){
                     router.push({path: "/todolist"});
                 }
                 else if(this.inputClickPass == false && this.inputClick == false){
